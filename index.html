@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="script.js" defer></script>
+    <link rel="stylesheet" href="style.css" />
+    <title>Sign Up</title>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-container">
+        <h1>Sign Up</h1>
+        <form onsubmit="submitData(event)">
+          <!-- <span>Enter Your Username</span> -->
+          <input
+            type="text"
+            placeholder="enter your username"
+            id="signUpUsername"
+          />
+          <input type="email" placeholder="enter your email" id="signUpEmail" />
+          <input
+            type="password"
+            placeholder="enter your password"
+            id="signUpPw"
+          />
+          <button type="Submit">Sign Up</button>
+        </form>
+        <button
+          id="login"
+          onclick="window.location.replace('Pages/Login/login.html')"
+        >
+          Login
+        </button>
+      </div>
+    </div>
+  </body>
+</html>
