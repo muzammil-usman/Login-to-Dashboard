@@ -10,14 +10,16 @@
   <body>
     <div class="main">
       <div class="main-container">
-        <h1>Sign Up</h1>
         <form onsubmit="submitData(event)">
-          <!-- <span>Enter Your Username</span> -->
+          <h1>Sign Up</h1>
+
           <input
             type="text"
             placeholder="enter your username"
             id="signUpUsername"
+            autofocus
           />
+          <input type="text" placeholder="enter your name" id="signUpName" />
           <input type="email" placeholder="enter your email" id="signUpEmail" />
           <input
             type="password"
@@ -26,12 +28,11 @@
           />
           <button type="Submit">Sign Up</button>
         </form>
-        <button
+        <a
           id="login"
           onclick="window.location.replace('Pages/Login/login.html')"
+          >Already have a Account?</a
         >
-          Login
-        </button>
       </div>
     </div>
   </body>

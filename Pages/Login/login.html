@@ -3,13 +3,15 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="login.css" />
+    <script src="login.js" defer></script>
     <title>Login</title>
   </head>
   <body>
     <div class="main">
       <div class="main-cont">
-        <h1>Login</h1>
-        <form onsubmit="">
+        <form onsubmit="onclick(submitData(event))">
+          <h1>Login</h1>
           <input
             type="email"
             placeholder="Enter Your Email"
@@ -22,9 +24,9 @@
           />
           <button type="submit">Login</button>
         </form>
-        <button onclick="window.location.replace('../../index.html')">
-          Sign Up
-        </button>
+        <a onclick="window.location.replace('../../index.html')"
+          >Don't have a account?</a
+        >
       </div>
     </div>
   </body>

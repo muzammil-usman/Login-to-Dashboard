@@ -7,4 +7,64 @@
   box-sizing: border-box;
   scroll-behavior: smooth;
   font-family: "Lato", sans-serif;
+  overflow-x: hidden;
+  text-transform: capitalize;
+}
+
+.main {
+  width: 100vw;
+  height: 100vh;
+  background-color: violet;
+}
+.main-container {
+  width: 90%;
+  height: 100%;
+  margin: 0 auto;
+  background-color: whitesmoke;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 50px;
+}
+
+h1 {
+  margin-top: 50px;
+}
+form {
+  display: flex;
+  width: 80%;
+  margin: 0 auto;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 25px;
+  background-color: white;
+}
+
+input {
+  width: 300px;
+  height: 40px;
+  padding-left: 12.5px;
+  border-radius: 5px;
+  border-color: transparent;
+  border-bottom-color: black;
+  border-right-color: black;
+}
+
+button {
+  width: 150px;
+  height: 40px;
+  border-radius: 5px;
+  &:hover {
+    background-color: violet;
+    cursor: pointer;
+  }
+}
+
+a {
+  &:hover {
+    color: darkviolet;
+    cursor: pointer;
+  }
 }
