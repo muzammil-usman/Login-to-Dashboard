@@ -1,9 +1,10 @@
 var userSignUpData = getData() ? [...getData()] : [];
 var DataCatcher = JSON.parse(localStorage.getItem("SignUpData"));
+var LoginDataHolder = JSON.parse(localStorage.getItem("LoginUsers"));
 
-// if (DataCatcher) {
-//   window.location.replace("Pages/Dashboard/dashboard.html");
-// }
+if (LoginDataHolder) {
+  window.location.replace("Pages/Dashboard/dashboard.html");
+}
 
 function setData(data) {
   localStorage.setItem("SignUpData", JSON.stringify(data));

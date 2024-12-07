@@ -1,11 +1,8 @@
 var DataCatcher = JSON.parse(localStorage.getItem("SignUpData"));
 var h2 = document.getElementById("h2");
 
-function dataRender() {
-  for (let i in DataCatcher) {
-    h2.innerText = "Welcome " + " " + DataCatcher[i].email;
-    return;
-  }
+function UserRemover() {
+  localStorage.removeItem("LoginUsers");
+  window.location.replace("../Login/login.html");
+  return;
 }
-
-dataRender();
