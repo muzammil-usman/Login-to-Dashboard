@@ -68,3 +68,29 @@ a {
     cursor: pointer;
   }
 }
+
+.gender {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+}
+
+#male,
+#female {
+  width: 15px;
+  height: 15px;
+}
+
+#selectCity {
+  width: 150px;
+  padding-left: 25px;
+  height: 30px;
+  border-top-color: transparent;
+  border-left-color: transparent;
+  border-right-color: black;
+  &:hover {
+    background-color: violet;
+    cursor: pointer;
+  }
+}

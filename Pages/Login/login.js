@@ -1,9 +1,5 @@
-var DataCatcher = JSON.parse(localStorage.getItem("SignUpData"));
-function loginUser(username, password) {
-  this.username = username;
-  this.password = password;
-}
-
+var DataCatcher = JSON.parse(localStorage.getItem("Users"));
+var loggedIn;
 function submitData(e) {
   e.preventDefault();
 
@@ -17,12 +13,10 @@ function submitData(e) {
       loginEmail.value === DataCatcher[i].email &&
       loginPassword.value === DataCatcher[i].password
     ) {
+      loggedIn = DataCatcher[i];
+      console.log(loggedIn);
+      localStorage.setItem("LoginUsers", JSON.stringify(loggedIn));
       window.location.replace("../Dashboard/dashboard.html");
-      var loginUserData = new loginUser(
-        DataCatcher[i].email,
-        DataCatcher[i].password
-      );
-      localStorage.setItem("LoginUsers", JSON.stringify(loginUserData));
       alert("Login Successful!");
     }
   }

@@ -26,6 +26,30 @@
             placeholder="enter your password"
             id="signUpPw"
           />
+          <input
+            type="password"
+            placeholder="confirm password"
+            id="signUpConfirmPw"
+          />
+          <div class="gender">
+            <span>Select your gender :</span>
+            <label for="male">Male</label>
+            <input type="radio" id="male" name="gender" value="male" />
+
+            <label for="female">Female</label>
+            <input type="radio" id="female" name="gender" value="female" />
+          </div>
+          <div class="city">
+            <label for="selectCity">Select City :</label>
+            <select name="" id="selectCity">
+              <option value="" hidden>Select City</option>
+              <option value="Karachi">Karachi</option>
+              <option value="Islamabad">Islamabad</option>
+              <option value="Quetta">Quetta</option>
+              <option value="Peshawar">Peshawar</option>
+              <option value="Lahore">Lahore</option>
+            </select>
+          </div>
           <button type="Submit">Sign Up</button>
         </form>
         <a
