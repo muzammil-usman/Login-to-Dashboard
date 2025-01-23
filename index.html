@@ -3,34 +3,52 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src="script.js" defer></script>
+    <script src="script.js" defer type="module"></script>
+    <script src="firebase.js" type="module" defer></script>
     <link rel="stylesheet" href="style.css" />
     <title>Sign Up</title>
   </head>
   <body>
     <div class="main">
       <div class="main-container">
-        <form onsubmit="submitData(event)">
+        <form id="form">
           <h1>Sign Up</h1>
+          <div class="signUpUsername">
+            <input
+              type="text"
+              placeholder="enter your username"
+              id="signUpUsername"
+              autofocus
+            />
+          </div>
+          <div class="signUpName">
+            <input type="text" placeholder="enter your name" id="signUpName" />
+          </div>
 
-          <input
-            type="text"
-            placeholder="enter your username"
-            id="signUpUsername"
-            autofocus
-          />
-          <input type="text" placeholder="enter your name" id="signUpName" />
-          <input type="email" placeholder="enter your email" id="signUpEmail" />
-          <input
-            type="password"
-            placeholder="enter your password"
-            id="signUpPw"
-          />
-          <input
-            type="password"
-            placeholder="confirm password"
-            id="signUpConfirmPw"
-          />
+          <div class="signUpEmail">
+            <input
+              type="email"
+              placeholder="enter your email"
+              id="signUpEmail"
+            />
+          </div>
+
+          <div class="signUpPassword">
+            <input
+              type="password"
+              placeholder="enter your password"
+              id="signUpPw"
+            />
+          </div>
+
+          <div class="confirmPassword">
+            <input
+              type="password"
+              placeholder="confirm password"
+              id="signUpConfirmPw"
+            />
+          </div>
+
           <div class="gender">
             <span>Select your gender :</span>
             <label for="male">Male</label>
