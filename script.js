@@ -11,18 +11,8 @@ import {
   signInWithEmailAndPassword,
   onAuthStateChanged,
   db,
+  auth,
 } from "./firebase.js";
-
-const auth = getAuth(app);
-
-onAuthStateChanged(auth, (user) => {
-  if (user) {
-    const uid = user.uid;
-    // if (location.pathname !== "Pages/Dashboard/dashboard.html") {
-    window.location.replace("Pages/Dashboard/dashboard.html");
-    // }
-  }
-});
 
 function submitData(e) {
   e.preventDefault();
@@ -46,19 +36,15 @@ function submitData(e) {
 }
 
 let dataPusher = async () => {
-  await createUserWithEmailAndPassword(
-    auth,
-    signUpEmail.value,
-    signUpPassword.value
-  )
-    .then((userCredential) => {
-      const user = userCredential.user;
-    })
-    .catch((error) => {
-      alert(error);
-      return;
-    });
-  if (createUserWithEmailAndPassword) {
+  try {
+    const userCredential = await createUserWithEmailAndPassword(
+      auth,
+      signUpEmail.value,
+      signUpPassword.value
+    );
+
+    const user = userCredential.user;
+
     const docRef = await addDoc(collection(db, "users"), {
       email: signUpEmail.value,
       password: signUpPassword.value,
@@ -66,8 +52,15 @@ let dataPusher = async () => {
       name: signUpName.value,
       gender: genderChecker(),
       username: signUpUsername.value,
+      userId: user.uid,
     });
+
+    console.log("Firestore mein data successfully add ho gaya:", docRef.id);
+
     window.location.replace("Pages/Dashboard/dashboard.html");
+  } catch (error) {
+    console.error("Error during signup or Firestore operation:", error.message);
+    alert(error.message);
   }
 };
 
@@ -85,59 +78,21 @@ function genderChecker() {
     }
   }
 }
-// if (DataCatcher) {
-//   for (let i = 0; i < DataCatcher.length; i++) {
-//     if (DataCatcher[i].email === signUpEmail.value) {
-//       alert("Email Already Exist");
-//       return;
-//     }
-//   }
-// } else {
-// let dataPusher = (username, name, email, password, gender, city) => {
 
-// };
-// } else {
-//   window.location.replace("Pages/Dashboard/dashboard.html");
-//   userSignUpData = [
-//     ...userSignUpData,
-//     {
-//       name: signUpName.value,
-//       email: signUpEmail.value,
-//       password: signUpPassword.value,
-//       username: signUpUsername.value,
-//       gender: genderChecker(),
-//       city: cityChecker(),
-//     },
-//   ];
-//   setData(userSignUpData);
-//   setLoginData(userSignUpData);
-// }
-//   }
-//   userSignUpData = [
-//     ...userSignUpData,
-//     {
-//       name: signUpName.value,
-//       email: signUpEmail.value,
-//       password: signUpPassword.value,
-//       username: signUpUsername.value,
-//       gender: genderChecker(),
-//       city: cityChecker(),
-//     },
-//   ];
-//   loginData = [
-//     ...loginData,
-//     {
-//       name: signUpName.value,
-//       email: signUpEmail.value,
-//       password: signUpPassword.value,
-//       username: signUpUsername.value,
-//       gender: genderChecker(),
-//       city: cityChecker(),
-//     },
-//   ];
-//   setData(userSignUpData);
-//   setLoginData(loginData);
-//   window.location.replace("Pages/Dashboard/dashboard.html");
+let userChecker = () => {
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      console.log("User logged in:", user.uid);
+
+      if (location.pathname !== "/Pages/Dashboard/dashboard.html") {
+        window.location.replace("Pages/Dashboard/dashboard.html");
+      }
+    } else {
+      console.log("No user is logged in.");
+    }
+  });
+};
+userChecker();
 
 var signUpUsername = document.getElementById("signUpUsername");
 var signUpPassword = document.getElementById("signUpPw");

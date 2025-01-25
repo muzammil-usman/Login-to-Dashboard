@@ -1,18 +1,20 @@
-import { getAuth, signOut } from "../../firebase.js";
+import {
+  getAuth,
+  signOut,
+  onAuthStateChanged,
+  app,
+  auth,
+} from "../../firebase.js";
 
-// var DataCatcher2 = JSON.parse(localStorage.getItem("LoginUsers"));
-// var h2 = document.getElementById("h2");
+function checkAuth() {
+  onAuthStateChanged(auth, (user) => {
+    if (!user) {
+      window.location.replace("../Login/login.html");
+    }
+  });
+}
 
-// h2.innerText = DataCatcher2.name;
-
-// function DataDisplay() {
-//   for (let i = 0; DataCatcher2.length; i++) {
-//     h2.innerText = DataCatcher2[i].name;
-//     break;
-//   }
-// }
-// DataDisplay();
-const auth = getAuth();
+checkAuth();
 
 let logoutBtn = document.getElementById("logOut");
 
