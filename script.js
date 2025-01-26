@@ -1,14 +1,9 @@
+var flag = true;
+
 import {
-  app,
-  getFirestore,
   collection,
   addDoc,
-  getDocs,
-  doc,
-  setDoc,
-  getAuth,
   createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
   onAuthStateChanged,
   db,
   auth,
@@ -19,7 +14,6 @@ function submitData(e) {
   if (
     !signUpEmail.value ||
     !signUpPassword.value ||
-    !signUpUsername.value ||
     !signUpName.value ||
     !gender ||
     !selectCity.value
@@ -37,6 +31,7 @@ function submitData(e) {
 
 let dataPusher = async () => {
   try {
+    flag = false;
     const userCredential = await createUserWithEmailAndPassword(
       auth,
       signUpEmail.value,
@@ -47,15 +42,16 @@ let dataPusher = async () => {
 
     const docRef = await addDoc(collection(db, "users"), {
       email: signUpEmail.value,
-      password: signUpPassword.value,
       city: cityChecker(),
       name: signUpName.value,
       gender: genderChecker(),
-      username: signUpUsername.value,
       userId: user.uid,
     });
 
+    localStorage.setItem("user", user.uid);
+
     console.log("Firestore mein data successfully add ho gaya:", docRef.id);
+    flag = true;
 
     window.location.replace("Pages/Dashboard/dashboard.html");
   } catch (error) {
@@ -78,14 +74,14 @@ function genderChecker() {
     }
   }
 }
-
 let userChecker = () => {
   onAuthStateChanged(auth, (user) => {
     if (user) {
       console.log("User logged in:", user.uid);
-
-      if (location.pathname !== "/Pages/Dashboard/dashboard.html") {
-        window.location.replace("Pages/Dashboard/dashboard.html");
+      if (flag) {
+        if (location.pathname !== "/Pages/Dashboard/dashboard.html") {
+          window.location.replace("Pages/Dashboard/dashboard.html");
+        }
       }
     } else {
       console.log("No user is logged in.");
@@ -94,7 +90,6 @@ let userChecker = () => {
 };
 userChecker();
 
-var signUpUsername = document.getElementById("signUpUsername");
 var signUpPassword = document.getElementById("signUpPw");
 var signUpEmail = document.getElementById("signUpEmail");
 var signUpName = document.getElementById("signUpName");

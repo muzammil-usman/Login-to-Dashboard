@@ -3,6 +3,7 @@ import {
   getAuth,
   app,
   auth,
+  onAuthStateChanged,
 } from "../../firebase.js";
 
 let loginer = async (e) => {
@@ -25,6 +26,21 @@ let loginer = async (e) => {
       console.log("error aagaya ", errorMessage);
     });
 };
+
+let userChecker = () => {
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      console.log("User logged in:", user.uid);
+      localStorage.setItem("user", user.uid);
+      if (location.pathname !== "../Dashboard/dashboard.html") {
+        window.location.replace("../Dashboard/dashboard.html");
+      }
+    } else {
+      console.log("No user is logged in.");
+    }
+  });
+};
+userChecker();
 
 var loginPassword = document.getElementById("loginUserPassword");
 var loginEmail = document.getElementById("loginUserEmail");

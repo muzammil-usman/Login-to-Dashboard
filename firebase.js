@@ -6,6 +6,7 @@ import {
   signInWithEmailAndPassword,
   onAuthStateChanged,
   signOut,
+  deleteUser,
 } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
 
 import {
@@ -15,6 +16,7 @@ import {
   getDocs,
   doc,
   setDoc,
+  deleteDoc,
 } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -49,4 +51,5 @@ export {
   db,
   signOut,
   auth,
+  deleteUser,
 };
