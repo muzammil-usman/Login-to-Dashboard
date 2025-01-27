@@ -52,4 +52,5 @@ export {
   signOut,
   auth,
   deleteUser,
+  deleteDoc,
 };

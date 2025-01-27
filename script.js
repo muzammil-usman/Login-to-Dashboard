@@ -49,8 +49,9 @@ let dataPusher = async () => {
     });
 
     localStorage.setItem("user", user.uid);
+    localStorage.setItem("userCollection", docRef.id);
 
-    console.log("Firestore mein data successfully add ho gaya:", docRef.id);
+    // console.log("Firestore mein data successfully add ho gaya:", docRef.id);
     flag = true;
 
     window.location.replace("Pages/Dashboard/dashboard.html");
