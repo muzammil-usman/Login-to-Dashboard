@@ -1,15 +1,21 @@
 var flag = true;
 
 import {
+  setDoc,
   collection,
   addDoc,
   createUserWithEmailAndPassword,
   onAuthStateChanged,
   db,
   auth,
+  GoogleAuthProvider,
+  signInWithPopup,
+  provider,
+  getDoc,
+  doc,
 } from "./firebase.js";
 
-function submitData(e) {
+async function submitData(e) {
   e.preventDefault();
   if (
     !signUpEmail.value ||
@@ -51,7 +57,7 @@ let dataPusher = async () => {
     localStorage.setItem("user", user.uid);
     localStorage.setItem("userCollection", docRef.id);
 
-    // console.log("Firestore mein data successfully add ho gaya:", docRef.id);
+    console.log("Firestore mein data successfully add ho gaya:", docRef.id);
     flag = true;
 
     window.location.replace("Pages/Dashboard/dashboard.html");
@@ -75,6 +81,39 @@ function genderChecker() {
     }
   }
 }
+
+let googleUsers = async (e) => {
+  e.preventDefault();
+  flag = false;
+  try {
+    const result = await signInWithPopup(auth, provider);
+    const user = result.user;
+
+    const userRef = doc(db, "users", user.uid);
+    const userDoc = await getDoc(userRef);
+
+    if (userDoc.exists()) {
+      console.log("User already exists!");
+      window.location.replace("Pages/Dashboard/dashboard.html");
+      return;
+    } else {
+      await setDoc(userRef, {
+        email: user.email,
+        name: user.displayName,
+        userId: user.uid,
+      });
+      console.log("User Firestore mein add hogaya!");
+    }
+
+    localStorage.setItem("user", user.uid);
+    localStorage.setItem("userCollection", user.uid);
+    flag = true;
+    window.location.replace("Pages/Dashboard/dashboard.html");
+  } catch (error) {
+    console.error("Google Sign-in error:", error.message);
+  }
+};
+
 let userChecker = () => {
   onAuthStateChanged(auth, (user) => {
     if (user) {
@@ -100,4 +139,8 @@ var confirmPw = document.getElementById("signUpConfirmPw");
 var form = document.getElementById("form");
 form.addEventListener("submit", function (event) {
   submitData(event);
+});
+var googleBtn = document.getElementById("googleBtn");
+googleBtn.addEventListener("click", function (event) {
+  googleUsers(event);
 });

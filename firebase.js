@@ -7,6 +7,8 @@ import {
   onAuthStateChanged,
   signOut,
   deleteUser,
+  GoogleAuthProvider,
+  signInWithPopup,
 } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
 
 import {
@@ -16,6 +18,7 @@ import {
   getDocs,
   doc,
   setDoc,
+  getDoc,
   deleteDoc,
 } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-firestore.js";
 
@@ -31,10 +34,9 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
-
 const db = getFirestore(app);
-
 const auth = getAuth(app);
+const provider = new GoogleAuthProvider();
 
 export {
   getFirestore,
@@ -53,4 +55,8 @@ export {
   auth,
   deleteUser,
   deleteDoc,
+  GoogleAuthProvider,
+  signInWithPopup,
+  provider,
+  getDoc,
 };
