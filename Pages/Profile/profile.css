@@ -1,0 +1,84 @@
+@import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Parkinsans:wght@300..800&display=swap");
+* {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  text-decoration: none;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+  font-family: "Lato", sans-serif;
+  overflow-x: hidden;
+  text-transform: capitalize;
+}
+
+.main {
+  width: 100vw;
+  height: 100vh;
+}
+
+.main-cont {
+  margin: 0 auto;
+  margin-top: 25px;
+  display: flex;
+  width: 90%;
+  flex-direction: column;
+  gap: 50px;
+}
+.nav {
+  display: flex;
+  justify-content: space-between;
+}
+a {
+  font-size: 1.5rem;
+  color: black;
+  &:hover {
+    color: turquoise;
+  }
+}
+.userInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+  justify-content: center;
+  align-items: center;
+  width: 400px;
+  height: 500px;
+  margin: 0 auto;
+  border: 1px solid black;
+}
+button {
+  width: 150px;
+  height: 40px;
+  border-radius: 5px;
+  &:hover {
+    background-color: turquoise;
+    cursor: pointer;
+  }
+}
+
+#editorDiv {
+  margin: 0 auto;
+  width: 310px;
+  height: 400px;
+  background-color: black;
+  position: relative;
+}
+
+#cancelBtn {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  top: 0;
+  right: 0;
+  background-color: red;
+  border: transparent;
+  &:hover {
+    color: white;
+  }
+}
+
+.btns {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
