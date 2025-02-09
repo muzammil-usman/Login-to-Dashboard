@@ -21,24 +21,14 @@
   margin-top: 25px;
   display: flex;
   width: 90%;
-  /* background-color: red; */
   flex-direction: column;
+  align-items: center;
+  gap: 50px;
 }
 .nav {
   display: flex;
   justify-content: space-between;
-  /* background-color: orange; */
-}
-.userInfo {
-  display: flex;
-  flex-direction: column;
-  gap: 50px;
-  justify-content: center;
-  align-items: center;
-  width: 400px;
-  height: 500px;
-  /* background-color: pink; */
-  margin: 0 auto;
+  width: 100%;
 }
 button {
   width: 150px;
@@ -49,8 +39,49 @@ button {
     cursor: pointer;
   }
 }
-.btns {
+
+a {
+  font-size: 1.5rem;
+  color: black;
+  &:hover {
+    color: turquoise;
+  }
+}
+
+.searchBox {
+  width: 310px;
+  border: 1px solid black;
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  outline: none;
+  border-top: transparent;
+  border-left: transparent;
+  border-right: transparent;
+}
+
+.searcher {
+  width: 200px;
+  padding-left: 15px;
+  border-radius: 4px;
+  outline: none;
+  border: transparent;
+}
+
+#searchIcon {
+  &:hover {
+    color: turquoise;
+    cursor: pointer;
+  }
+}
+
+.allPosts {
+  width: 300px;
+  min-height: 300px;
+  max-height: auto;
+  display: flex;
+  flex-direction: column;
   gap: 20px;
+  justify-content: center;
+  padding-left: 15px;
 }

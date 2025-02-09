@@ -20,6 +20,7 @@ import {
   setDoc,
   getDoc,
   deleteDoc,
+  updateDoc,
 } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -59,4 +60,5 @@ export {
   signInWithPopup,
   provider,
   getDoc,
+  updateDoc,
 };

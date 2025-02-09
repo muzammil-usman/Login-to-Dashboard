@@ -1,83 +1,75 @@
-// import {
-//   getAuth,
-//   signOut,
-//   onAuthStateChanged,
-//   auth,
-//   getDocs,
-//   collection,
-//   db,
-//   deleteUser,
-//   deleteDoc,
-//   doc,
-// } from "../../firebase.js";
+import {
+  signOut,
+  onAuthStateChanged,
+  auth,
+  db,
+  getDocs,
+  collection,
+} from "../../firebase.js";
 
-// var flag = false;
+var flag = false;
 
-// var dataPasser = localStorage.getItem("user");
-// var userCollection = localStorage.getItem("userCollection");
+var dataPasser = localStorage.getItem("user");
 
-// let dataPicker = async () => {
-//   let usersData = [];
-//   const querySnapshot = await getDocs(collection(db, "users"));
+function checkAuth() {
+  onAuthStateChanged(auth, (user) => {
+    if (!user && !flag) {
+      window.location.replace("../Login/login.html");
+    }
+  });
+}
+checkAuth();
 
-//   querySnapshot.forEach((doc) => {
-//     usersData.push(doc.data());
-//   });
+function UserRemover() {
+  signOut(auth)
+    .then(() => {
+      console.log("Sign-out successful.");
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  window.location.replace("../Login/login.html");
+}
+var logoutBtn = document.getElementById("logOut");
+logoutBtn.addEventListener("click", UserRemover);
 
-//   for (let i = 0; i < usersData.length; i++) {
-//     if (usersData[i].userId == dataPasser) {
-//       email.innerText = "Email : " + usersData[i].email;
-//       name.innerText = "Name : " + usersData[i].name;
-//       gender.innerText = "gender: " + usersData[i].gender;
-//       city.innerText = "city : " + usersData[i].city;
-//       console.log(usersData);
-//     }
-//   }
-// };
+let displayPosts = async () => {
+  let postData = [];
+  const querySnapshot = await getDocs(collection(db, "posts"));
+  querySnapshot.forEach((doc) => {
+    postData.push(doc.data());
+  });
+  for (let i = 0; i < postData.length; i++) {
+    let post = document.createElement("div");
+    post.setAttribute("class", "allPosts");
+    let userName = document.createElement("strong");
+    userName.innerText = "username nikaalna nahi aaraha yaar";
+    let time = document.createElement("p");
+    if (postData[i].time) {
+      let timestamp = postData[i].time;
+      let date;
+      if (typeof timestamp === "object" && timestamp.seconds) {
+        date = new Date(timestamp.seconds * 1000);
+      } else {
+        date = new Date(timestamp);
+      }
+      time.innerText = date.toLocaleString();
+    }
 
-// function checkAuth() {
-//   onAuthStateChanged(auth, (user) => {
-//     if (!user && !flag) {
-//       window.location.replace("../Login/login.html");
-//     } else {
-//       dataPicker();
-//     }
-//   });
-// }
-// checkAuth();
+    let postTitle = document.createElement("h2");
+    postTitle.innerText = postData[i].postTitle;
 
-// function UserRemover() {
-//   signOut(auth)
-//     .then(() => {
-//       console.log("Sign-out successful.");
-//     })
-//     .catch((error) => {
-//       console.log(error);
-//     });
-//   window.location.replace("../Login/login.html");
-// }
-// var logoutBtn = document.getElementById("logOut");
-// logoutBtn.addEventListener("click", UserRemover);
+    let postDes = document.createElement("p");
+    postDes.innerText = postData[i].postDescription;
 
-// let userDeleter = async () => {
-//   await deleteDoc(doc(db, "users", userCollection)).then(() => {
-//     const auth = getAuth();
-//     const user = auth.currentUser;
+    post.appendChild(userName);
+    post.appendChild(time);
+    post.appendChild(postTitle);
+    post.appendChild(postDes);
+    main.appendChild(post);
+    console.log(postData);
+  }
+};
+displayPosts();
 
-//     deleteUser(user)
-//       .then(() => {
-//         console.log("user deleted", user);
-//         flag = true;
-//       })
-//       .catch((error) => {
-//         console.log("error", error);
-//       });
-//   });
-// };
-// var deleteBtn = document.getElementById("delete");
-// deleteBtn.addEventListener("click", userDeleter);
-
-// var name = document.getElementById("name");
-// var city = document.getElementById("city");
-// var gender = document.getElementById("gender");
-// var email = document.getElementById("email");
+var main = document.getElementById("main-cont");
