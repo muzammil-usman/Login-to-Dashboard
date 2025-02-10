@@ -10,6 +10,7 @@ import {
 var flag = false;
 
 var dataPasser = localStorage.getItem("user");
+var allPostsDiv = document.getElementById("allPostsDiv");
 
 function checkAuth() {
   onAuthStateChanged(auth, (user) => {
@@ -36,40 +37,43 @@ logoutBtn.addEventListener("click", UserRemover);
 let displayPosts = async () => {
   let postData = [];
   const querySnapshot = await getDocs(collection(db, "posts"));
+
   querySnapshot.forEach((doc) => {
     postData.push(doc.data());
   });
-  for (let i = 0; i < postData.length; i++) {
-    let post = document.createElement("div");
-    post.setAttribute("class", "allPosts");
-    let userName = document.createElement("strong");
-    userName.innerText = "username nikaalna nahi aaraha yaar";
-    let time = document.createElement("p");
-    if (postData[i].time) {
-      let timestamp = postData[i].time;
-      let date;
-      if (typeof timestamp === "object" && timestamp.seconds) {
-        date = new Date(timestamp.seconds * 1000);
-      } else {
-        date = new Date(timestamp);
-      }
-      time.innerText = date.toLocaleString();
+
+  let postsHTML = "";
+
+  postData.forEach((postDataItem) => {
+    let name = postDataItem.name;
+    let postTitle = postDataItem.postTitle;
+    let postDescription = postDataItem.postDescription;
+
+    let time;
+    if (postDataItem.time) {
+      let timestamp = postDataItem.time;
+      let date = timestamp.seconds
+        ? new Date(timestamp.seconds * 1000)
+        : new Date(timestamp);
+      time = date.toLocaleString();
     }
 
-    let postTitle = document.createElement("h2");
-    postTitle.innerText = postData[i].postTitle;
+    postsHTML += `
+      <div class="allPosts">
+        <strong>${name}</strong>
+        <p>${time}</p>
+        <h3>${postTitle}</h3>
+        <p>${postDescription}</p>
+      </div>
+    `;
+  });
 
-    let postDes = document.createElement("p");
-    postDes.innerText = postData[i].postDescription;
-
-    post.appendChild(userName);
-    post.appendChild(time);
-    post.appendChild(postTitle);
-    post.appendChild(postDes);
-    main.appendChild(post);
-    console.log(postData);
-  }
+  let postsContainer = document.createElement("div");
+  postsContainer.id = "postsContainer";
+  main.appendChild(postsContainer);
+  postsContainer.innerHTML = postsHTML;
 };
+
 displayPosts();
 
 var main = document.getElementById("main-cont");

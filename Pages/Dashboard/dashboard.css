@@ -75,13 +75,24 @@ a {
   }
 }
 
-.allPosts {
-  width: 300px;
-  min-height: 300px;
-  max-height: auto;
+#postsContainer {
+  width: 600px;
+  height: auto;
+  border-top: transparent;
+  border-bottom: transparent;
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  justify-content: center;
-  padding-left: 15px;
+  align-items: center;
+  gap: 50px;
+}
+
+.allPosts {
+  width: 100%;
+  height: 300px;
+  border: 1px solid black;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  border-top: transparent;
+  border-left: transparent;
 }

@@ -11,12 +11,16 @@ import {
   doc,
   updateDoc,
   addDoc,
+  query,
+  where,
 } from "../../firebase.js";
 
 var flag = false;
+var postCreaterName;
 
 var dataPasser = localStorage.getItem("user");
 var userCollection = localStorage.getItem("userCollection");
+var myPostsDiv = document.getElementById("myPostsDiv");
 
 let dataPicker = async () => {
   let usersData = [];
@@ -130,7 +134,11 @@ let dataUpdated = async () => {
       (cityUpdater.value = ""),
       (nameUpdater.value = ""),
       (genderUpdater.value = ""),
-      alert("Profile setting updated")
+      alert("Profile setting updated"),
+      dataPicker(),
+      main.removeChild(editorDiv),
+      main.appendChild(mainCont),
+      (main.style.display = "block")
     );
   }
 };
@@ -138,6 +146,49 @@ let dataUpdated = async () => {
 var saveBtn = document.createElement("button");
 saveBtn.innerText = "Save";
 saveBtn.addEventListener("click", dataUpdated);
+
+let myPostGetter = async () => {
+  try {
+    const q = query(collection(db, "users"), where("userId", "==", dataPasser));
+    const querySnapshot = await getDocs(q);
+    myPostsDiv.innerHTML = "";
+    querySnapshot.forEach((doc) => {
+      postCreaterName = doc.data().name;
+      console.log(postCreaterName);
+    });
+
+    const u = query(
+      collection(db, "posts"),
+      where("userUid", "==", dataPasser)
+    );
+    const Snapshot = await getDocs(u);
+    Snapshot.forEach((doc) => {
+      let postData = doc.data();
+      let postTitle = postData.postTitle || "Untitled";
+      let postText = postData.postDescription;
+      let timestamp = postData.time;
+      let postDate = timestamp
+        ? new Date(timestamp.seconds * 1000).toLocaleString()
+        : "Unknown Date";
+
+      myPostsDiv.innerHTML += `
+      <div class="myPosts">
+        <h3>${postCreaterName}</h3>
+        <small>${postDate}</small>
+        <h2>${postTitle}</h2>
+        <p>${postText}</p>
+        <div>
+        <button id='${doc.id}' class='update-btn'>Edit</button>
+        <button id='${doc.id}' class='update-btn'>Delete</button>
+        </div>
+      </div>
+    `;
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+myPostGetter();
 
 let postCreater = async () => {
   if (!postTitle.value || !postDescription.value) {
@@ -149,7 +200,10 @@ let postCreater = async () => {
       postDescription: postDescription.value,
       userUid: dataPasser,
       time: time,
-    }).then(((postTitle.value = ""), (postDescription.value = "")));
+      name: postCreaterName,
+    }).then(
+      ((postTitle.value = ""), (postDescription.value = ""), myPostGetter())
+    );
   }
 };
 
@@ -192,7 +246,6 @@ male.innerText = "Male";
 var female = document.createElement("option");
 female.setAttribute("value", "female");
 female.innerText = "female";
-``;
 
 genderUpdater.appendChild(updateYourGender);
 genderUpdater.appendChild(male);
