@@ -20,6 +20,7 @@ var postCreaterName;
 
 var dataPasser = localStorage.getItem("user");
 var userCollection = localStorage.getItem("userCollection");
+var pakarLiya = localStorage.getItem("docRef");
 var myPostsDiv = document.getElementById("myPostsDiv");
 
 let dataPicker = async () => {
@@ -126,6 +127,7 @@ let dataUpdated = async () => {
     return;
   } else {
     const washingtonRef = doc(db, "users", userCollection);
+    postCreaterName = nameUpdater.value;
     await updateDoc(washingtonRef, {
       city: cityUpdater.value,
       name: nameUpdater.value,
@@ -140,12 +142,72 @@ let dataUpdated = async () => {
       main.appendChild(mainCont),
       (main.style.display = "block")
     );
+
+    const p = query(
+      collection(db, "posts"),
+      where("userUid", "==", dataPasser)
+    );
+    const snapshot = await getDocs(p);
+
+    for (const doc of snapshot.docs) {
+      await updateDoc(doc.ref, {
+        name: postCreaterName,
+      });
+    }
   }
 };
 
 var saveBtn = document.createElement("button");
 saveBtn.innerText = "Save";
 saveBtn.addEventListener("click", dataUpdated);
+
+let updatePost = async (post_id) => {
+  localStorage.setItem("docRef", post_id);
+  main.style.display = "flex";
+  main.style.alignItems = "center";
+  editorDiv.appendChild(cancelBtn);
+  editorDiv.appendChild(nameUpdater);
+  // editorDiv.appendChild(updatedPostTitle);
+  nameUpdater.setAttribute("placeholder", "update post title...");
+  editorDiv.appendChild(doneBtn);
+  main.appendChild(editorDiv);
+  mainCont.remove();
+};
+
+let postUpdated = async () => {
+  if (nameUpdater.value.length < 3) {
+    alert("Name should be greater than 3 alphabets");
+    return;
+  } else {
+    await updateDoc(doc(db, "posts", pakarLiya), {
+      postDescription: updatedPostTitle.value,
+      name: postCreaterName,
+      postTitle: nameUpdater.value,
+    }).then(
+      (nameUpdater.value = ""),
+      (updatedPostTitle = ""),
+      alert("Profile setting updated"),
+      main.removeChild(editorDiv),
+      main.appendChild(mainCont),
+      (main.style.display = "block"),
+      myPostGetter()
+    );
+  }
+};
+
+var doneBtn = document.createElement("button");
+doneBtn.innerText = "Done";
+doneBtn.addEventListener("click", postUpdated);
+
+let deletePost = async (post_id) => {
+  try {
+    await deleteDoc(doc(db, "posts", post_id)).then(() => {
+      console.log("post deleted");
+    });
+  } catch (error) {
+    console.error(error);
+  }
+};
 
 let myPostGetter = async () => {
   try {
@@ -154,7 +216,6 @@ let myPostGetter = async () => {
     myPostsDiv.innerHTML = "";
     querySnapshot.forEach((doc) => {
       postCreaterName = doc.data().name;
-      console.log(postCreaterName);
     });
 
     const u = query(
@@ -179,10 +240,16 @@ let myPostGetter = async () => {
         <p>${postText}</p>
         <div>
         <button id='${doc.id}' class='update-btn'>Edit</button>
-        <button id='${doc.id}' class='update-btn'>Delete</button>
+        <button id='${doc.id}' class='delete-btn'>Delete</button>
         </div>
       </div>
     `;
+      document.addEventListener("click", (event) => {
+        if (event.target.classList.contains("update-btn")) {
+          let postId = event.target.id; // Get the post ID
+          updatePost(postId);
+        }
+      });
     });
   } catch (error) {
     console.log(error);
@@ -226,7 +293,7 @@ editorDiv.id = "editorDiv";
 var nameUpdater = document.createElement("input");
 nameUpdater.setAttribute("class", "inputer");
 nameUpdater.setAttribute("placeholder", "update your name");
-nameUpdater.setAttribute("type", "text"); // Input type set kar diya text
+nameUpdater.setAttribute("type", "text");
 nameUpdater.setAttribute(
   "oninput",
   "this.value = this.value.replace(/[^a-zA-Z ]/g, '')"
@@ -290,3 +357,7 @@ cityUpdater.appendChild(sialkot);
 cityUpdater.appendChild(faisalabad);
 
 var time = new Date();
+
+var updatedPostTitle = document.createElement("input");
+updatedPostTitle.setAttribute("class", "inputer");
+updatedPostTitle.setAttribute("placeholder", "Update post description...");

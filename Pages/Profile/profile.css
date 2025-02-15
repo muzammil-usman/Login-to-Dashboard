@@ -120,7 +120,6 @@ textarea {
 .myPostsDiv {
   width: 600px;
   height: auto;
-  /* border: 1px solid black; */
   border-top: transparent;
   border-bottom: transparent;
   display: flex;
