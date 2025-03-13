@@ -1,3 +1,4 @@
+// sab cheezein firebase se import horahi hein
 import {
   getAuth,
   signOut,
@@ -18,11 +19,13 @@ import {
 var flag = false;
 var postCreaterName;
 
+// localstorage se sara data idhar se uth raha hey
 var dataPasser = localStorage.getItem("user");
 var userCollection = localStorage.getItem("userCollection");
 var pakarLiya = localStorage.getItem("docRef");
 var myPostsDiv = document.getElementById("myPostsDiv");
 
+// yeh function firestore se user wali collection se data utha kar UI mein show kara raha hey
 let dataPicker = async () => {
   let usersData = [];
   const querySnapshot = await getDocs(collection(db, "users"));
@@ -41,6 +44,7 @@ let dataPicker = async () => {
   }
 };
 
+// yeh function check karta hey keh user login hey ya nahi hey agar nahi hey tou login waley page par shift kardega
 function checkAuth() {
   onAuthStateChanged(auth, (user) => {
     if (!user && !flag) {
@@ -52,6 +56,7 @@ function checkAuth() {
 }
 checkAuth();
 
+//yeh function user ko signout karta hey yai logout karta current runtime mein aur login waley page par phekta hey userko utha kar
 function UserRemover() {
   signOut(auth)
     .then(() => {
@@ -66,6 +71,7 @@ function UserRemover() {
 var logoutBtn = document.getElementById("logOut");
 logoutBtn.addEventListener("click", UserRemover);
 
+// yeh function user ko delete karta hey real time authentication se bhi aur firestore se bhi
 let userDeleter = async () => {
   await deleteDoc(doc(db, "users", userCollection)).then(() => {
     const auth = getAuth();
@@ -85,6 +91,7 @@ let userDeleter = async () => {
 var deleteBtn = document.getElementById("delete");
 deleteBtn.addEventListener("click", userDeleter);
 
+//div hey chota sa jo user ki details edit kartey waqt aayega aur user ka deta yahan se update hoga
 let editor = (e) => {
   main.removeChild(mainCont);
   main.style.display = "flex";
@@ -102,8 +109,14 @@ editBtn.addEventListener("click", function (event) {
   editor(event);
 });
 
+//yeh function cancel button par laga howa hey jo sab kuch cancel kardeta hey
 let cancelUpdate = () => {
-  main.removeChild(editorDiv);
+  if (main.appendChild(editorDiv)) {
+    main.removeChild(editorDiv);
+  }
+  if (main.appendChild(postEditorDiv)) {
+    main.removeChild(postEditorDiv);
+  }
   main.appendChild(mainCont);
   main.style.display = "block";
 };
@@ -113,6 +126,7 @@ cancelBtn.id = "cancelBtn";
 cancelBtn.innerText = "X";
 cancelBtn.addEventListener("click", cancelUpdate);
 
+//yeh function gender check karega user ka keh khali tou nahi chor raha user
 function genderChecker() {
   if (genderUpdater.selectedIndex === 0) {
     alert("Please Select Your Gender");
@@ -123,7 +137,7 @@ function genderChecker() {
 
 let dataUpdated = async () => {
   if (nameUpdater.value.length < 3) {
-    alert("Name should be greater than 3 alphabets");
+    alert("updated name should be greater than 3 alphabets");
     return;
   } else {
     const washingtonRef = doc(db, "users", userCollection);
@@ -165,29 +179,31 @@ let updatePost = async (post_id) => {
   localStorage.setItem("docRef", post_id);
   main.style.display = "flex";
   main.style.alignItems = "center";
-  editorDiv.appendChild(cancelBtn);
-  editorDiv.appendChild(nameUpdater);
-  // editorDiv.appendChild(updatedPostTitle);
-  nameUpdater.setAttribute("placeholder", "update post title...");
-  editorDiv.appendChild(doneBtn);
-  main.appendChild(editorDiv);
-  mainCont.remove();
+  if (!main.appendChild(postEditorDiv)) {
+    main.appendChild(postEditorDiv);
+  } else {
+    postEditorDiv.appendChild(cancelBtn);
+    postEditorDiv.appendChild(updatedPostTitle);
+    postEditorDiv.appendChild(updatedPostDescription);
+    postEditorDiv.appendChild(doneBtn);
+    mainCont.remove();
+  }
 };
 
 let postUpdated = async () => {
-  if (nameUpdater.value.length < 3) {
-    alert("Name should be greater than 3 alphabets");
+  if (updatedPostTitle.value.length < 3) {
+    alert("post title should be greater than 3 alphabets");
     return;
   } else {
     await updateDoc(doc(db, "posts", pakarLiya), {
-      postDescription: updatedPostTitle.value,
+      postDescription: updatedPostDescription.value,
       name: postCreaterName,
-      postTitle: nameUpdater.value,
+      postTitle: updatedPostTitle.value,
     }).then(
-      (nameUpdater.value = ""),
-      (updatedPostTitle = ""),
+      (updatedPostDescription.value = ""),
+      (updatedPostTitle.value = ""),
       alert("Profile setting updated"),
-      main.removeChild(editorDiv),
+      main.removeChild(postEditorDiv),
       main.appendChild(mainCont),
       (main.style.display = "block"),
       myPostGetter()
@@ -324,10 +340,10 @@ var cityUpdater = document.createElement("select");
 cityUpdater.setAttribute("class", "inputer");
 cityUpdater.setAttribute("placeholder", "update your city");
 
-var updateYourGender = document.createElement("option");
-updateYourGender.innerText = "update your Gender";
-updateYourGender.setAttribute("hidden", "hidden");
-updateYourGender.value = "";
+var updateYourCity = document.createElement("option");
+updateYourCity.innerText = "update your city";
+updateYourCity.setAttribute("hidden", "hidden");
+updateYourCity.value = "";
 
 var islamabad = document.createElement("option");
 islamabad.value = "islamabad";
@@ -349,7 +365,7 @@ var faisalabad = document.createElement("option");
 faisalabad.value = "faisalabad";
 faisalabad.innerText = "faisalabad";
 
-cityUpdater.appendChild(updateYourGender);
+cityUpdater.appendChild(updateYourCity);
 cityUpdater.appendChild(islamabad);
 cityUpdater.appendChild(karachi);
 cityUpdater.appendChild(lahore);
@@ -360,4 +376,11 @@ var time = new Date();
 
 var updatedPostTitle = document.createElement("input");
 updatedPostTitle.setAttribute("class", "inputer");
-updatedPostTitle.setAttribute("placeholder", "Update post description...");
+updatedPostTitle.setAttribute("placeholder", "Update post title...");
+
+var postEditorDiv = document.createElement("div");
+postEditorDiv.id = "postEditorDiv";
+
+var updatedPostDescription = document.createElement("input");
+updatedPostDescription.setAttribute("class", "inputer");
+updatedPostDescription.setAttribute("placeholder", "Update post description");

@@ -58,7 +58,8 @@ button {
   }
 }
 
-#editorDiv {
+#editorDiv,
+#postEditorDiv {
   margin: 0 auto;
   width: 310px;
   height: 400px;
